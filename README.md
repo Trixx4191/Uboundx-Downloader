@@ -1,55 +1,84 @@
-# unboundx
+<div align="center">
 
-A simple Python tool called **UnboundX Downloader** that mirrors any **Apache / nginx directory listing** — like those on infocon.org — and downloads all videos, slides, and PDFs while preserving the exact folder structure from the site.
+<img src="https://img.shields.io/badge/UnboundX-Downloader-4A90D9?style=for-the-badge&logo=python&logoColor=white" alt="UnboundX Downloader"/>
+
+**Mirror any Apache / nginx directory listing to your local machine — fast, resumable, and polite.**
+
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![License](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/Trixx4191/Uboundx-Downloader?style=flat-square&color=f59e0b)](https://github.com/Trixx4191/Uboundx-Downloader/releases)
+[![Issues](https://img.shields.io/github/issues/Trixx4191/Uboundx-Downloader?style=flat-square)](https://github.com/Trixx4191/Uboundx-Downloader/issues)
+[![Stars](https://img.shields.io/github/stars/Trixx4191/Uboundx-Downloader?style=flat-square&color=facc15)](https://github.com/Trixx4191/Uboundx-Downloader/stargazers)
+
+[Features](#features) · [Quick Start](#quick-start) · [Usage](#usage) · [Configuration](#configuration-reference) · [Releases](https://github.com/Trixx4191/Uboundx-Downloader/releases)
+
+</div>
+
+---
+
+## What is UnboundX Downloader?
+
+UnboundX Downloader is a Python CLI tool that **recursively mirrors any Apache or nginx directory listing** (like those on `infocon.org`) to your local machine — preserving the exact remote folder structure and downloading only what's new.
+
+Perfect for archiving conference talks, security slides, PDFs, and course videos from open directory indexes.
 
 ---
 
 ## Features
 
-- Recursively crawls nested subdirectories
-- Mirrors the remote folder structure locally
-- Skips files that already exist (safe to re-run / resume)
-- Live progress bar showing `%` and MB per file
-- Configurable via `config.py` or CLI flags
-- Polite request delay to avoid hammering the server
+| | Feature |
+|---|---|
+| 🔁 | **Recursive crawling** — follows nested subdirectories automatically |
+| 🗂️ | **Structure mirroring** — remote folder layout reproduced exactly |
+| ⏭️ | **Smart resume** — skips existing files; safe to re-run |
+| 📊 | **Live progress bar** — real-time `%` and MB/s per file |
+| ⚙️ | **Dual config** — set defaults in `config.py`, override with CLI flags |
+| 🐢 | **Polite delay** — configurable pause between requests |
+| 🧹 | **Clean partials** — failed/incomplete files are auto-removed |
+| 🖥️ | **GUI mode** — optional `gui.py` for a desktop interface |
 
 ---
 
-## Quick start
+## Quick Start
 
 ```bash
-# 1. Clone / download the files
-git clone https://github.com/you/unboundx
-cd unboundx
+# 1. Clone the repo
+git clone https://github.com/Trixx4191/Uboundx-Downloader.git
+cd Uboundx-Downloader
 
 # 2. Install dependencies
 pip install -r requirements.txt
 
-# 3. Edit config.py to set your URL, then run
+# 3. Edit config.py to set your target URL, then run
 python downloader.py
 ```
+
+> **Requires Python 3.10+**
 
 ---
 
 ## Usage
 
-### Option A — edit `config.py`
+### Option A — Edit `config.py`
 
-Open `config.py` and set `BASE_URL` to the directory you want to mirror:
+Open `config.py` and set your target:
 
 ```python
-BASE_URL   = "https://infocon.org/skills/pwn.college%20-%20Hacking/Slides/04%20Reverse%20Engineering/"
+BASE_URL   = "https://infocon.org/cons/DEF%20CON/DEF%20CON%2031/"
 OUTPUT_DIR = "./downloads"
 EXTENSIONS = ["mp4", "mkv", "pdf", "pptx", "ppt"]
+DELAY_SEC  = 0.5
 ```
 
-Then just run:
+Then run:
 
 ```bash
 python downloader.py
 ```
 
-### Option B — CLI flags (override config.py)
+### Option B — CLI Flags
+
+Override any config value at runtime:
 
 | Flag | Description | Example |
 |------|-------------|---------|
@@ -58,24 +87,37 @@ python downloader.py
 | `--ext` | File extensions | `--ext mp4 pdf` |
 | `--delay` | Seconds between requests | `--delay 1.0` |
 
+**Examples:**
+
 ```bash
-# Download only videos from a specific con
+# Download all DEF CON 31 videos
 python downloader.py \
   --url "https://infocon.org/cons/DEF%20CON/DEF%20CON%2031/" \
   --out ./defcon31 \
   --ext mp4 mkv
 
-# Download slides only
+# Slides only
 python downloader.py \
   --url "https://infocon.org/skills/pwn.college%20-%20Hacking/Slides/" \
   --ext pdf pptx ppt
+
+# With a polite delay
+python downloader.py \
+  --url "https://example.com/lectures/" \
+  --delay 2.0
+```
+
+### Option C — GUI Mode
+
+```bash
+python gui.py
 ```
 
 ---
 
-## Output structure
+## Output Structure
 
-The tool mirrors the site's folder structure exactly. For example, crawling:
+The tool mirrors the remote folder layout exactly. For example, crawling:
 
 ```
 https://infocon.org/skills/pwn.college - Hacking/Slides/04 Reverse Engineering/
@@ -92,17 +134,15 @@ downloads/
     └── 02 - tools.pptx
 ```
 
-If you crawl a parent directory with multiple subdirectories, they all appear under `downloads/` mirroring the remote layout.
-
 ---
 
-## Configuration reference
+## Configuration Reference
 
-All settings live in `config.py`. CLI flags override them at runtime.
+All defaults live in `config.py`. CLI flags override at runtime.
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| `BASE_URL` | (pwn.college RE slides) | Directory URL to crawl |
+| `BASE_URL` | *(pwn.college RE slides)* | Directory URL to crawl |
 | `OUTPUT_DIR` | `./downloads` | Local root for saved files |
 | `EXTENSIONS` | `mp4 mkv pdf pptx ppt` | File types to download |
 | `DELAY_SEC` | `0.5` | Seconds between requests |
@@ -112,11 +152,11 @@ All settings live in `config.py`. CLI flags override them at runtime.
 
 ## Requirements
 
-- Python 3.10+
-- `requests` ≥ 2.28
-- `beautifulsoup4` ≥ 4.12
-
-Install with:
+| Package | Version |
+|---------|---------|
+| Python | ≥ 3.10 |
+| `requests` | ≥ 2.28 |
+| `beautifulsoup4` | ≥ 4.12 |
 
 ```bash
 pip install -r requirements.txt
@@ -124,14 +164,38 @@ pip install -r requirements.txt
 
 ---
 
-## Works with any directory listing
+## Compatibility
 
-This tool is not specific to infocon.org. It works with any site that serves a standard Apache or nginx **"Index of /"** directory listing — the plain HTML page with a table of links you get when there's no `index.html`.
+Works with **any** site that serves a standard Apache or nginx `Index of /` directory listing — not just `infocon.org`. If the page shows a plain HTML table of file links, UnboundX can crawl it.
 
 ---
 
 ## Notes
 
-- Files that already exist locally are skipped, so you can safely re-run the script to resume an interrupted download or pick up new files added to the site.
-- Partial files from failed downloads are automatically deleted so the next run retries them cleanly.
-- Press `Ctrl+C` at any time to stop.
+- **Resume-safe** — re-running the script skips already-downloaded files and picks up new ones.
+- **Partial cleanup** — files that fail mid-download are deleted so the next run retries cleanly.
+- **Stop anytime** — press `Ctrl+C`; partial files are cleaned up automatically.
+
+---
+
+## Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
+
+1. Fork the repo
+2. Create a branch: `git checkout -b feature/my-feature`
+3. Commit your changes: `git commit -m 'Add my feature'`
+4. Push: `git push origin feature/my-feature`
+5. Open a Pull Request
+
+---
+
+## License
+
+[MIT](LICENSE) © 2025 Trixx4191
+
+---
+
+<div align="center">
+  <sub>If this tool saved you time, consider giving it a ⭐</sub>
+</div>

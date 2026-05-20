@@ -53,7 +53,7 @@ FONT_M   = ("Courier New", 11)
 FONT_S   = ("Courier New", 9)
 FONT_L   = ("Courier New", 13, "bold")
 FONT_XL  = ("Courier New", 18, "bold")
-CHUNK    = 256 * 1024
+CHUNK    = 512 * 1024
 
 DEFAULT_EXTS = ["mp4", "mkv", "pdf", "pptx", "ppt" , "zip"]
 

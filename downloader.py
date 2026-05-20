@@ -51,7 +51,7 @@ DEFAULT_OUTPUT_DIR = resolve_cfg('OUTPUT_DIR', './downloads')
 DEFAULT_EXTENSIONS = resolve_cfg('EXTENSIONS', ['mp4', 'mkv', 'pdf', 'pptx', 'ppt'])
 DEFAULT_DELAY = resolve_cfg('DELAY_SEC', 1.0)
 DEFAULT_TIMEOUT = resolve_cfg('TIMEOUT_SEC', 120)
-DEFAULT_CHUNK_SIZE = resolve_cfg('CHUNK_SIZE', 256 * 1024)
+DEFAULT_CHUNK_SIZE = resolve_cfg('CHUNK_SIZE', 512 * 1024)
 
 _base_url = ""
 

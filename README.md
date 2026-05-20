@@ -18,7 +18,7 @@
 
 ## What is UnboundX Downloader?
 
-UnboundX Downloader is a Python CLI tool that **recursively mirrors any Apache or nginx directory listing** (like those on `infocon.org`) to your local machine — preserving the exact remote folder structure and downloading only what's new.
+UnboundX Downloader is a Python CLI tool that **recursively mirrors any Apache or nginx directory listing**  to your local machine — preserving the exact remote folder structure and downloading only what's new.
 
 Perfect for archiving conference talks, security slides, PDFs, and course videos from open directory indexes.
 
